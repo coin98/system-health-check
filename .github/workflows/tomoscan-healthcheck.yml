@@ -10,6 +10,13 @@ on:
   schedule:
     - cron: "*/10 * * * *"
  
+env:
+  SLACK_HOOK_KEY: ${{ secrets.SLACK_HOOK_KEY }}
+  SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+  SLACK_BOTNAME: ${{ secrets.SLACK_BOTNAME }}
+  SLACK_BOT_ICON: ${{ secrets.SLACK_BOT_ICON }}
+  TOMOSCAN_ENDPOINT: ${{ secrets.TOMOSCAN_ENDPOINT }}
+
       # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "cron"
