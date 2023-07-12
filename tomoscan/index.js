@@ -29,7 +29,8 @@ const main = async () => {
         if (process.env.TELEGRAM_CHAT && process.env.TELEGRAM_TOKEN) {
             notifyTelegram(msg, process.env.TELEGRAM_TOKEN, process.env.TELEGRAM_CHAT, true)
         }
-        throw new Error(msg)
+        console.error(msg)
+        process.exit(-1)
     }
 }
 main()
