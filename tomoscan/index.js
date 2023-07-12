@@ -9,12 +9,12 @@ const {
 
 const main = async () => {
     if (!process.env.SLACK_HOOK_KEY) {
-        console.log(`env SLACK_HOOK_KEY empty `)
-        return -1
+        throw new Error(`env SLACK_HOOK_KEY empty `)
     }
     if (!process.env.SLACK_CHANNEL) {
-        console.log(`env SLACK_CHANNEL empty`)
+        throw new Error(`env SLACK_CHANNEL empty`)
     }
+    console.log(`TOMOSCAN_ENDPOINT: ${process.env.TOMOSCAN_ENDPOINT}`)
     let data = await getHealthCheckData(process.env.TOMOSCAN_ENDPOINT)
     if (!data || !data.length) {
         return
