@@ -8,12 +8,6 @@ const {
  } = require('tomoscan-healthcheck')
 
 const main = async () => {
-    if (!process.env.SLACK_HOOK_KEY) {
-        throw new Error(`env SLACK_HOOK_KEY empty `)
-    }
-    if (!process.env.SLACK_CHANNEL) {
-        throw new Error(`env SLACK_CHANNEL empty`)
-    }
     console.log(`TOMOSCAN_ENDPOINT: ${process.env.TOMOSCAN_ENDPOINT}`)
     let data = await getHealthCheckData(process.env.TOMOSCAN_ENDPOINT)
     if (!data || !data.length) {
@@ -28,7 +22,13 @@ const main = async () => {
     }
     if (errors.length > 0) {
         let msg = process.env.PREFIX_MESSAGE + "\n" + errors.join("\n")
-        notifySlack(msg, process.env.SLACK_HOOK_KEY, process.env.SLACK_CHANNEL, process.env.SLACK_BOTNAME, process.env.SLACK_BOT_ICON)
+
+        if (process.env.SLACK_HOOK_KEY && process.env.SLACK_CHANNEL) {
+            notifySlack(msg, process.env.SLACK_HOOK_KEY, process.env.SLACK_CHANNEL, process.env.SLACK_BOTNAME ?? 'tomoscan-healthcheck', process.env.SLACK_BOT_ICON ?? 'c98')
+        }
+        if (process.env.TELEGRAM_CHAT && process.env.TELEGRAM_TOKEN) {
+            notifyTelegram(msg, process.env.TELEGRAM_TOKEN, process.env.TELEGRAM_CHAT, true)
+        }
     }
 }
 main()
