@@ -1,8 +1,3 @@
-const path = require('path')
-require('dotenv').config({
-    path: path.resolve(__dirname, '../.env')
-})
-
 const noti_bot = require('noti_bot')
 const notifySlack = noti_bot.slack
 
@@ -13,6 +8,13 @@ const {
  } = require('tomoscan-healthcheck')
 
 const main = async () => {
+    if (!process.env.SLACK_HOOK_KEY) {
+        console.log(`env SLACK_HOOK_KEY empty `)
+        return -1
+    }
+    if (!process.env.SLACK_CHANNEL) {
+        console.log(`env SLACK_CHANNEL empty`)
+    }
     let data = await getHealthCheckData(process.env.TOMOSCAN_ENDPOINT)
     if (!data || !data.length) {
         return
