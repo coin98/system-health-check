@@ -27,4 +27,4 @@ jobs:
 
       # Run script
       - name: Run healtchcheck script
-        run: cd tomoscan && npm install && node index.js
+        run: npm install && cd tomoscan && node index.js

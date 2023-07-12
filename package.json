@@ -1,5 +1,5 @@
 {
-  "name": "tomoscan-health-check-cron",
+  "name": "health-check-cron",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^10.0.0",
+    "noti_bot": "^1.1.3",
     "tomoscan-healthcheck": "^1.0.1"
   }
 }
