@@ -7,7 +7,7 @@ const {
     ERROR
  } = require('tomoscan-healthcheck')
 
- const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time))
+const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time))
 
 const main = async () => {
     console.log(`TOMOSCAN_ENDPOINT: ${process.env.TOMOSCAN_ENDPOINT}`)
@@ -32,7 +32,7 @@ const main = async () => {
             notifyTelegram(msg, process.env.TELEGRAM_TOKEN, process.env.TELEGRAM_CHAT, true)
         }
         console.error(msg)
-        await sleep(5000)
+        await sleep(1000)
         process.exit(-1)
     }
 }
