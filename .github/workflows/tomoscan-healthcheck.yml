@@ -1,7 +1,7 @@
 # This is a basic workflow to help you get started with Actions
  
 name:
-  TomoScan healthcheck
+  System HealthCheck
  
   # Controls when the workflow will run
 on:
@@ -23,7 +23,7 @@ env:
   SLACK_BOT_ICON: ${{ secrets.SLACK_BOT_ICON }}
   TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
   TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
-  PREFIX_MESSAGE: ${{ secrets.TOMOSCAN_PREFIX_MESSAGE }}
+  TOMOSCAN_PREFIX_MESSAGE: ${{ secrets.TOMOSCAN_PREFIX_MESSAGE }}
 
 
   # destination server information
@@ -33,7 +33,7 @@ env:
       # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "cron"
-  cron:
+  HealthCheck:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -44,7 +44,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
+          cache: 'npm'
+      - run: npm ci
 
       # Run script
-      - name: Run healtchcheck script
-        run: npm install && cd tomoscan && node index.js
+      - name: TomoScan HealthCheck
+        run: cd tomoscan && node index.js
