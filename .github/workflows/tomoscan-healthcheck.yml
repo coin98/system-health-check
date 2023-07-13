@@ -7,8 +7,13 @@ name:
 on:
   workflow_dispatch:
   # Triggers the workflow every 10 minutes
-  schedule:
-    - cron: "3,13,23,33,43,53 * * * *"
+
+  # Schedule on github action doesn't work as expected due to high demand
+  # Using an external cron service to triger workflow_dispatch via API
+  # check github action document for API trigger: https://docs.github.com/en/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
+
+  # schedule:
+  #   - cron: "3,13,23,33,43,53 * * * *"
  
 env:
   # Notification settings
