@@ -4,7 +4,7 @@ const notifyTelegram = noti_bot.telegram
 
 const { 
     getHealthCheckData, 
-    STATUS
+    STATUS_ERROR,
  } = require('@bobcoin98/tomomaster-healthcheck')
 
 const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time))
@@ -18,7 +18,7 @@ const main = async () => {
     console.log(data)
     let errors = []
     for (const e of data) {
-        if (e.status === STATUS.ERROR) {
+        if (e.status === STATUS_ERROR) {
             errors.push(e.error)
         }
     }
