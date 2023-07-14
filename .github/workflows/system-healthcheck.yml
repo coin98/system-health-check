@@ -48,9 +48,7 @@ jobs:
           node-version: '16'
           cache: 'npm'
       - name: Install package
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.TOKEN_READ_PACKAGE }}
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_READ_PACKAGE }}"  > ~/.npmrc && echo "@bobcoin98:registry=https://npm.pkg.github.com/" >> ~/.npmrc && npm ci
 
       # Run script
       - name: TomoScan HealthCheck
