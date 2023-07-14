@@ -56,4 +56,4 @@ jobs:
 
       # Run script
       - name: TomoMaster HealthCheck
-        run: cd - && cd tomomaster && node index.js
+        run: pwd && cd tomomaster && node index.js
