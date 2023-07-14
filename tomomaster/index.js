@@ -5,7 +5,7 @@ const notifyTelegram = noti_bot.telegram
 const { 
     getHealthCheckData, 
     STATUS
- } = require('tomomaster-healthcheck')
+ } = require('@bobcoin98/tomomaster-healthcheck')
 
 const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time))
 
