@@ -23,11 +23,13 @@ env:
   SLACK_BOT_ICON: ${{ secrets.SLACK_BOT_ICON }}
   TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
   TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+  TOMOMASTER_PREFIX_MESSAGE: ${{ secrets.TOMOMASTER_PREFIX_MESSAGE }}
   TOMOSCAN_PREFIX_MESSAGE: ${{ secrets.TOMOSCAN_PREFIX_MESSAGE }}
 
 
   # destination server information
   TOMOSCAN_ENDPOINT: ${{ secrets.TOMOSCAN_ENDPOINT }}
+  TOMOSMASTER_ENDPOINT: ${{ secrets.TOMOSMASTER_ENDPOINT }}
 
 
       # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -50,3 +52,7 @@ jobs:
       # Run script
       - name: TomoScan HealthCheck
         run: cd tomoscan && node index.js
+
+      # Run script
+      - name: TomoMaster HealthCheck
+        run: cd - && cd tomomaster && node index.js
