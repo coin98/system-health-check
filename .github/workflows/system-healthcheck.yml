@@ -47,7 +47,10 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
-      - run: npm ci
+      - name: Install package
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TOKEN_READ_PACKAGE }}
 
       # Run script
       - name: TomoScan HealthCheck
