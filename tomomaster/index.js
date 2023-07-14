@@ -4,30 +4,29 @@ const notifyTelegram = noti_bot.telegram
 
 const { 
     getHealthCheckData, 
-    OK,
-    ERROR
- } = require('tomoscan-healthcheck')
+    STATUS
+ } = require('@bobcoin98/tomomaster-healthcheck')
 
 const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time))
 
 const main = async () => {
-    console.log(`TOMOSCAN_ENDPOINT: ${process.env.TOMOSCAN_ENDPOINT}`)
-    let data = await getHealthCheckData(process.env.TOMOSCAN_ENDPOINT)
+    console.log(`TOMOSMASTER_ENDPOINT: ${process.env.TOMOSMASTER_ENDPOINT}`)
+    let data = await getHealthCheckData(process.env.TOMOSMASTER_ENDPOINT ?? 'https://master.tomochain.com')
     if (!data || !data.length) {
         return
     }
     console.log(data)
     let errors = []
     for (const e of data) {
-        if (e.status === ERROR) {
+        if (e.status === STATUS.ERROR) {
             errors.push(e.error)
         }
     }
     if (errors.length > 0) {
-        let msg = process.env.TOMOSCAN_PREFIX_MESSAGE + "\n" + errors.join("\n")
+        let msg = process.env.TOMOSMASTER_PREFIX_MESSAGE + "\n" + errors.join("\n")
 
         if (process.env.SLACK_HOOK_KEY && process.env.SLACK_CHANNEL) {
-            notifySlack(msg, process.env.SLACK_HOOK_KEY, process.env.SLACK_CHANNEL, process.env.SLACK_BOTNAME ?? 'tomoscan-healthcheck', process.env.SLACK_BOT_ICON ?? 'c98')
+            notifySlack(msg, process.env.SLACK_HOOK_KEY, process.env.SLACK_CHANNEL, process.env.SLACK_BOTNAME ?? 'tomomaster-healthcheck', process.env.SLACK_BOT_ICON ?? 'c98')
         }
         if (process.env.TELEGRAM_CHAT && process.env.TELEGRAM_TOKEN) {
             notifyTelegram(msg, process.env.TELEGRAM_TOKEN, process.env.TELEGRAM_CHAT, true)
