@@ -2,4 +2,4 @@
 
 Schedule running healthcheck for applications
 - [x] [TomoScan](https://tomoscan.io)
-- [ ] [TomoMaster](https://master.tomochain.com)
+- [x] [TomoMaster](https://master.tomochain.com)
