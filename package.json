@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@bobcoin98/tomomaster-healthcheck": "^0.0.14",
+    "@bobcoin98/tomomaster-healthcheck": "^0.0.15",
     "noti_bot": "^1.1.3",
     "tomoscan-healthcheck": "^1.0.2"
   }
