@@ -57,3 +57,7 @@ jobs:
       # Run script
       - name: TomoMaster HealthCheck
         run: cd tomomaster && node index.js
+
+      # Run script
+      - name: TomoChain RPC HealthCheck
+        run: cd rpc && node index.js
