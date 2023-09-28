@@ -5,8 +5,32 @@ const notifyTelegram = noti_bot.telegram
 const RPC = 'https://rpc.tomochain.com'
 const { sleep } = require('../utils')
 
-const getGasPrice = async () => {
+const main = async() => {
     const errors = []
+    const errGasPrice = await getGasPrice()
+    if (errGasPrice) {
+        errors.push(errGasPrice)
+    }
+    const errBlockNumber = await getLatestBlockNumber()
+    if (errBlockNumber) {
+        errors.push(errBlockNumber)
+    }
+    if (errors.length > 0) {
+        let msg = `RPC ${RPC} error \n` + errors.join("\n")
+
+        if (process.env.SLACK_HOOK_KEY && process.env.SLACK_CHANNEL) {
+            notifySlack(msg, process.env.SLACK_HOOK_KEY, process.env.SLACK_CHANNEL, process.env.SLACK_BOTNAME ?? 'rpc-healthcheck', process.env.SLACK_BOT_ICON ?? 'c98')
+        }
+        if (process.env.TELEGRAM_CHAT && process.env.TELEGRAM_TOKEN) {
+            notifyTelegram(msg, process.env.TELEGRAM_TOKEN, process.env.TELEGRAM_CHAT, true)
+        }
+        console.error(msg)
+        await sleep(1000)
+        process.exit(-1)
+    }
+}
+
+const getGasPrice = async () => {
     try {
       const result = await new Promise((resolve, reject) => {
         request.post(
@@ -31,27 +55,54 @@ const getGasPrice = async () => {
       })
       if (!result.error) {
         const res = result.result
-        console.log(parseInt(res))
+        if (!Number.isInteger(parseInt(res))) {
+            return `Invalid gasPrice`
+        }
+        console.log(`gasPrice: ${parseInt(res)}`)
       } else {
-        errors.push(result.error)
+        return result.error
       }
     } catch (e) {
-        errors.push(e.message)
-    }
-
-    if (errors.length > 0) {
-        let msg = `RPC ${RPC} error \n` + errors.join("\n")
-
-        if (process.env.SLACK_HOOK_KEY && process.env.SLACK_CHANNEL) {
-            notifySlack(msg, process.env.SLACK_HOOK_KEY, process.env.SLACK_CHANNEL, process.env.SLACK_BOTNAME ?? 'rpc-healthcheck', process.env.SLACK_BOT_ICON ?? 'c98')
-        }
-        if (process.env.TELEGRAM_CHAT && process.env.TELEGRAM_TOKEN) {
-            notifyTelegram(msg, process.env.TELEGRAM_TOKEN, process.env.TELEGRAM_CHAT, true)
-        }
-        console.error(msg)
-        await sleep(1000)
-        process.exit(-1)
+        return e.message
     }
   }
   
-  getGasPrice()
+
+  const getLatestBlockNumber = async () => {
+    try {
+      const result = await new Promise((resolve, reject) => {
+        request.post(
+            RPC,
+          {
+            json: {
+              jsonrpc: '2.0',
+              method: 'eth_blockNumber',
+              params: [],
+              id: 89,
+            },
+            timeout: 10000,
+          },
+          (error, res, body) => {
+            if (error) {
+              logger.error(error)
+              return resolve({ error: 1 })
+            }
+            return resolve(body)
+          }
+        )
+      })
+      if (!result.error) {
+        const res = result.result
+        if (!Number.isInteger(parseInt(res))) {
+            return `Invalid blockNumber`
+        }
+        console.log(`BlockNumber: ${parseInt(res)}`)
+      } else {
+        return result.error
+      }
+    } catch (e) {
+        return e.message
+    }
+  }
+  
+  main()
