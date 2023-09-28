@@ -7,7 +7,7 @@ const {
     STATUS_ERROR,
  } = require('@bobcoin98/tomomaster-healthcheck')
 
-const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time))
+ const { sleep } = require('../utils')
 
 const main = async () => {
     console.log(`TOMOSMASTER_ENDPOINT: ${process.env.TOMOSMASTER_ENDPOINT}`)

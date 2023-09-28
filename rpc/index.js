@@ -3,6 +3,7 @@ const noti_bot = require('noti_bot')
 const notifySlack = noti_bot.slack
 const notifyTelegram = noti_bot.telegram
 const RPC = 'https://rpc.tomochain.com'
+const { sleep } = require('../utils')
 
 const getGasPrice = async () => {
     const errors = []

@@ -8,7 +8,7 @@ const {
     ERROR
  } = require('tomoscan-healthcheck')
 
-const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time))
+ const { sleep } = require('../utils')
 
 const main = async () => {
     console.log(`TOMOSCAN_ENDPOINT: ${process.env.TOMOSCAN_ENDPOINT}`)
