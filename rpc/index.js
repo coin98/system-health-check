@@ -58,14 +58,14 @@ const getGasPrice = async () => {
       if (!result.error) {
         const res = result.result
         if (!Number.isInteger(parseInt(res))) {
-            return `Invalid gasPrice`
+            return `RPC gasPrice error: Invalid gasPrice`
         }
         console.log(`gasPrice: ${parseInt(res)}`)
       } else {
-        return result.error
+        return `RPC gasPrice error:  ${result.error}`
       }
     } catch (e) {
-        return e.message
+        return `RPC gasPrice error: ${e.message}`
     }
   }
   
@@ -96,14 +96,14 @@ const getGasPrice = async () => {
       if (!result.error) {
         const res = result.result
         if (!Number.isInteger(parseInt(res))) {
-            return `Invalid blockNumber`
+            return `RPC blockNumber error: Invalid blockNumber`
         }
         console.log(`BlockNumber: ${parseInt(res)}`)
       } else {
-        return result.error
+        return `RPC blockNumber error: ${result.error}`
       }
     } catch (e) {
-        return e.message
+        return `RPC blockNumber error: ${e.message}`
     }
   }
   
