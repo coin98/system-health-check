@@ -7,11 +7,13 @@ const { sleep } = require('../utils')
 
 const main = async() => {
     const errors = []
-    const errGasPrice = await getGasPrice()
+    const [errGasPrice, errBlockNumber] = await Promise.all([
+        getGasPrice(),
+        getLatestBlockNumber(),
+    ])
     if (errGasPrice) {
         errors.push(errGasPrice)
     }
-    const errBlockNumber = await getLatestBlockNumber()
     if (errBlockNumber) {
         errors.push(errBlockNumber)
     }
