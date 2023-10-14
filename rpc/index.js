@@ -2,41 +2,42 @@ const request = require('request')
 const noti_bot = require('noti_bot')
 const notifySlack = noti_bot.slack
 const notifyTelegram = noti_bot.telegram
-const RPC = 'https://rpc.tomochain.com'
+const RPCs = ['https://rpc.tomochain.com', 'https://new-rpc.tomochain.com']
 const { sleep } = require('../utils')
 
 const main = async() => {
     const errors = []
-    const [errGasPrice, errBlockNumber] = await Promise.all([
-        getGasPrice(),
-        getLatestBlockNumber(),
-    ])
-    if (errGasPrice) {
-        errors.push(errGasPrice)
-    }
-    if (errBlockNumber) {
-        errors.push(errBlockNumber)
+    for (const rpc of RPCs) {
+        const [errGasPrice, errBlockNumber] = await Promise.all([
+            getGasPrice(),
+            getLatestBlockNumber(),
+        ])
+        if (errGasPrice) {
+            errors.push(`rpc ${rpc} error: ${errGasPrice}`)
+        }
+        if (errBlockNumber) {
+            errors.push(`rpc ${rpc} error: ${errBlockNumber}`)
+        }
     }
     if (errors.length > 0) {
-        let msg = `RPC ${RPC} error \n` + errors.join("\n")
-
+        let msg = `RPC ${rpc} error \n` + errors.join("\n")
         if (process.env.SLACK_HOOK_KEY && process.env.SLACK_CHANNEL) {
             notifySlack(msg, process.env.SLACK_HOOK_KEY, process.env.SLACK_CHANNEL, process.env.SLACK_BOTNAME ?? 'rpc-healthcheck', process.env.SLACK_BOT_ICON ?? 'c98')
         }
         if (process.env.TELEGRAM_CHAT && process.env.TELEGRAM_TOKEN) {
-            notifyTelegram(msg, process.env.TELEGRAM_TOKEN, process.env.TELEGRAM_CHAT, true)
+             notifyTelegram(msg, process.env.TELEGRAM_TOKEN, process.env.TELEGRAM_CHAT, true)
         }
-        console.error(msg)
         await sleep(1000)
         process.exit(-1)
     }
+
 }
 
-const getGasPrice = async () => {
+const getGasPrice = async (rpc) => {
     try {
       const result = await new Promise((resolve, reject) => {
         request.post(
-            RPC,
+            rpc,
           {
             json: {
               jsonrpc: '2.0',
@@ -70,11 +71,11 @@ const getGasPrice = async () => {
   }
   
 
-  const getLatestBlockNumber = async () => {
+  const getLatestBlockNumber = async (rpc) => {
     try {
       const result = await new Promise((resolve, reject) => {
         request.post(
-            RPC,
+            rpc,
           {
             json: {
               jsonrpc: '2.0',
