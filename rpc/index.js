@@ -9,8 +9,8 @@ const main = async() => {
     const errors = []
     for (const rpc of RPCs) {
         const [errGasPrice, errBlockNumber] = await Promise.all([
-            getGasPrice(),
-            getLatestBlockNumber(),
+            getGasPrice(rpc),
+            getLatestBlockNumber(rpc),
         ])
         if (errGasPrice) {
             errors.push(`rpc ${rpc} error: ${errGasPrice}`)
