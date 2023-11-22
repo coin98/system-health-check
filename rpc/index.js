@@ -2,7 +2,7 @@ const request = require('request')
 const noti_bot = require('noti_bot')
 const notifySlack = noti_bot.slack
 const notifyTelegram = noti_bot.telegram
-const RPCs = ['https://rpc.tomochain.com', 'https://new-rpc.tomochain.com', 'https://rpc.viction.xyz/']
+const RPCs = ['https://rpc.tomochain.com', 'https://new-rpc.tomochain.com', 'https://rpc.viction.xyz']
 const { sleep } = require('../utils')
 
 const main = async() => {
