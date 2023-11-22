@@ -20,7 +20,7 @@ const main = async() => {
         }
     }
     if (errors.length > 0) {
-        let msg = `RPC ${rpc} error \n` + errors.join("\n")
+        let msg = `RPC error \n` + errors.join("\n")
         if (process.env.SLACK_HOOK_KEY && process.env.SLACK_CHANNEL) {
             notifySlack(msg, process.env.SLACK_HOOK_KEY, process.env.SLACK_CHANNEL, process.env.SLACK_BOTNAME ?? 'rpc-healthcheck', process.env.SLACK_BOT_ICON ?? 'c98')
         }
