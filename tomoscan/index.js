@@ -2,27 +2,34 @@ const noti_bot = require('noti_bot')
 const notifySlack = noti_bot.slack
 const notifyTelegram = noti_bot.telegram
 
-const { 
-    getHealthCheckData, 
+const {
+    getHealthCheckData,
     OK,
     ERROR
- } = require('tomoscan-healthcheck')
+} = require('tomoscan-healthcheck')
 
- const { sleep } = require('../utils')
+const { sleep } = require('../utils')
 
 const main = async () => {
-    console.log(`TOMOSCAN_ENDPOINT: ${process.env.TOMOSCAN_ENDPOINT}`)
-    let data = await getHealthCheckData(process.env.TOMOSCAN_ENDPOINT)
-    if (!data || !data.length) {
-        return
-    }
-    console.log(data)
     let errors = []
-    for (const e of data) {
-        if (e.status === ERROR) {
-            errors.push(e.error)
+
+    // multiple api endpoints
+    const endpoints = process.env.TOMOSCAN_ENDPOINT.split(',')
+
+    for (const endpoint of endpoints) {
+        console.log(`TOMOSCAN_ENDPOINT: ${endpoint}`)
+        let data = await getHealthCheckData(endpoint)
+        if (!data || !data.length) {
+            return
+        }
+        console.log(data)
+        for (const e of data) {
+            if (e.status === ERROR) {
+                errors.push(e.error)
+            }
         }
     }
+
     if (errors.length > 0) {
         let msg = process.env.TOMOSCAN_PREFIX_MESSAGE + "\n" + errors.join("\n")
 
