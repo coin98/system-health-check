@@ -10,6 +10,11 @@ const {
 
 const { sleep } = require('../utils')
 
+const TESTNET_MODULE_IGNORE = {
+    'cronjobs': true,
+    'tokenTransfer': true,
+    'internalTx': true,
+}
 const main = async () => {
     let errors = []
 
@@ -25,6 +30,10 @@ const main = async () => {
         console.log(data)
         for (const e of data) {
             if (e.status === ERROR) {
+                // for testnet, ignore token txz, internal txs, cron token
+                if (endpoint.includes('testnet') && TESTNET_MODULE_IGNORE[e.module]) {
+                    continue
+                }
                 errors.push(`${endpoint} : ${e.error}`)
             }
         }
