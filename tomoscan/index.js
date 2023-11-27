@@ -25,13 +25,13 @@ const main = async () => {
         console.log(data)
         for (const e of data) {
             if (e.status === ERROR) {
-                errors.push(e.error)
+                errors.push(`${endpoint} : ${e.error}`)
             }
         }
     }
 
     if (errors.length > 0) {
-        let msg = process.env.TOMOSCAN_PREFIX_MESSAGE + "\n" + errors.join("\n")
+        let msg = ''
 
         if (process.env.SLACK_HOOK_KEY && process.env.SLACK_CHANNEL) {
             notifySlack(msg, process.env.SLACK_HOOK_KEY, process.env.SLACK_CHANNEL, process.env.SLACK_BOTNAME ?? 'tomoscan-healthcheck', process.env.SLACK_BOT_ICON ?? 'c98')
