@@ -3,10 +3,10 @@ const noti_bot = require('noti_bot')
 const notifySlack = noti_bot.slack
 const notifyTelegram = noti_bot.telegram
 const RPCs = [
-    'https://rpc.tomochain.com',
-    'https://rpc2.tomochain.com',
+//     'https://rpc.tomochain.com',
+//     'https://rpc2.tomochain.com',
     'https://rpc.viction.xyz',
-    'https://rpc-testnet.tomochain.com', // testnet
+    'https://rpc-testnet.viction.xyz', // testnet
 ]
 const { sleep } = require('../utils')
 
