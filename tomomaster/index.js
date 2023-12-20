@@ -11,6 +11,7 @@ const { sleep } = require('../utils')
 
 const main = async () => {
 
+    const errors = []
     const endpoints = process.env.TOMOSMASTER_ENDPOINT.split(',')
 
     for (const endpoint of endpoints) {
