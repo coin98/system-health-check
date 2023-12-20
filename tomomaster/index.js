@@ -11,7 +11,7 @@ const {
 
 const main = async () => {
     console.log(`TOMOSMASTER_ENDPOINT: ${process.env.TOMOSMASTER_ENDPOINT}`)
-    let data = await getHealthCheckData(process.env.TOMOSMASTER_ENDPOINT ?? 'https://master.tomochain.com')
+    let data = await getHealthCheckData(process.env.TOMOSMASTER_ENDPOINT ?? 'https://www.vicmaster.xyz')
     if (!data || !data.length) {
         return
     }
