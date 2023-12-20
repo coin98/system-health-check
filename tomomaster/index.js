@@ -2,28 +2,34 @@ const noti_bot = require('noti_bot')
 const notifySlack = noti_bot.slack
 const notifyTelegram = noti_bot.telegram
 
-const { 
-    getHealthCheckData, 
+const {
+    getHealthCheckData,
     STATUS_ERROR,
- } = require('@bobcoin98/tomomaster-healthcheck')
+} = require('@bobcoin98/tomomaster-healthcheck')
 
- const { sleep } = require('../utils')
+const { sleep } = require('../utils')
 
 const main = async () => {
-    console.log(`TOMOSMASTER_ENDPOINT: ${process.env.TOMOSMASTER_ENDPOINT}`)
-    let data = await getHealthCheckData(process.env.TOMOSMASTER_ENDPOINT ?? 'https://www.vicmaster.xyz')
-    if (!data || !data.length) {
-        return
-    }
-    console.log(data)
-    let errors = []
-    for (const e of data) {
-        if (e.status === STATUS_ERROR) {
-            errors.push(e.error)
+
+    const endpoints = process.env.TOMOSMASTER_ENDPOINT.split(',')
+
+    for (const endpoint of endpoints) {
+        console.log(`TOMOSMASTER_ENDPOINT: ${endpoint}`)
+        let data = await getHealthCheckData(endpoint)
+        if (!data || !data.length) {
+            return
+        }
+        console.log(data)
+        let errors = []
+        for (const e of data) {
+            if (e.status === STATUS_ERROR) {
+                errors.push(`${endpoint} : ${e.error}`)
+            }
         }
     }
+
     if (errors.length > 0) {
-        let msg = process.env.TOMOMASTER_PREFIX_MESSAGE + "\n" + errors.join("\n")
+        let msg = "\n"
 
         if (process.env.SLACK_HOOK_KEY && process.env.SLACK_CHANNEL) {
             notifySlack(msg, process.env.SLACK_HOOK_KEY, process.env.SLACK_CHANNEL, process.env.SLACK_BOTNAME ?? 'tomomaster-healthcheck', process.env.SLACK_BOT_ICON ?? 'c98')
